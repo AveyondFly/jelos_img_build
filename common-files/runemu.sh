@@ -110,7 +110,7 @@ EOF
 
 function quit() {
         ${VERBOSE} && log $0 "Cleaning up and exiting"
-        bluetooth enable
+        #bluetooth enable
         set_kill set "emulationstation"
         clear_screen
         DEVICE_CPU_GOVERNOR=$(get_setting system.cpugovernor)
@@ -168,7 +168,7 @@ esac
 ### Prepare to load our emulator and game.
 loginit "$1" "$2" "$3" "$4"
 clear_screen
-bluetooth disable
+#bluetooth disable
 set_kill stop
 
 # freej2me needs the JDK to be downloaded on the first run

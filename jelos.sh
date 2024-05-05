@@ -64,6 +64,18 @@ cp -f ${common_files}/bt/rtk_hciattach ${system_root}/usr/bin/rtk_hciattach
 chmod 775 ${system_root}/usr/bin/rtk_hciattach
 cp -f ${common_files}/bt/rtl8821c_* ${system_root}/usr/lib/kernel-overlays/base/lib/firmware/
 
+rm -rf ${system_root}/usr/lib/systemd/system/bluetoothsense.service
+cp -f ${common_files}/batocera-bluetooth ${system_root}/usr/bin/batocera-bluetooth
+chmod 775 ${system_root}/usr/bin/batocera-bluetooth
+cp -f ${common_files}/jelos-bluetooth ${system_root}/usr/bin/jelos-bluetooth
+chmod 775 ${system_root}/usr/bin/jelos-bluetooth
+cp -f ${common_files}/bluetoothctl ${system_root}/usr/bin/
+chmod 775 ${system_root}/usr/bin/bluetoothctl
+
+echo "revert kernel"
+cp -rf ${common_files}/8821cs.ko ${system_root}/usr/lib/kernel-overlays/base/lib/modules/4.19.172/kernel/drivers/net/wireless/rockchip_wlan/rtl8821cs/8821cs.ko
+
+
 echo "Update j2me files"
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 chmod 775 ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
