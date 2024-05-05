@@ -99,6 +99,10 @@ echo "Update bezels.sh"
 cp -f ${common_files}/bezels.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/bezels.sh
 
+echo "Fix mplayer"
+cp -f ${common_files}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
+chmod 775 ${system_root}/usr/bin/start_mplayer.sh
+
 echo "Update issue file" 
 cp ${common_files}/issue ${system_root}/etc/
 
