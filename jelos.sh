@@ -1,13 +1,20 @@
 #! /bin/bash
-source_img_name="JELOS-RGB30.aarch64-20240314-MOD"
-source_img_file="${source_img_name}.img.gz"
-target_img_name="JELOS-RGB30.aarch64-20240314-MOU"
+filename=$1
+source_img_name=${filename%.*}
+#source_img_file="${source_img_name}.img.gz"
+#target_img_name="JELOS-RGB30.aarch64-20240314-MOU"
 mount_point="target"
 common_files="common-files"
 system_root="SYSTEM-root"
 systemd_path="${system_root}/usr/lib/systemd/system"
 config_path="${system_root}/usr/config"
 modules_load_path="${system_root}/usr/lib/modules-load.d"
+
+if [ -z "$1" ]  
+then  
+    echo "Should run with img as: sudo ./jelos.sh xxx.img"
+    exit 1
+fi
 
 # Check if root
 if [ "$UID" -ne 0 ]; then
@@ -21,7 +28,7 @@ echo "Creating mount point"
 mkdir ${mount_point}
 echo "Mounting Jelos boot partition"
 loop_device=$(losetup -f)
-losetup -P $loop_device ${source_img_name}.img
+losetup -P $loop_device $1
 mount ${loop_device}p3 ${mount_point}
 
 echo "Decompressing SYSTEM image"
@@ -140,4 +147,4 @@ rm -rf ${system_root}
 rm -rf ${mount_point}
 
 #cp -f ${source_img_name}.img /media/sf_E_DRIVE/${target_img_name}.img
-mv ${source_img_name}.img ${target_img_name}.img
+#mv $1  ${target_img_name}.img
