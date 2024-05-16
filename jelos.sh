@@ -32,6 +32,10 @@ unsquashfs -d ${system_root} ${mount_point}/SYSTEM
 #echo "Update fs-resze file"
 #sudo cp -f fs-resize_jelos ${system_root}/usr/lib/jelos/fs-resize 
 
+
+sudo cp -f ${common_files}/010-autorun ${system_root}/usr/lib/autostart/cbepx/
+sudo cp -f ${common_files}/007-rootpw ${system_root}/usr/lib/autostart/common/
+
 echo "Support openborff"
 cp -f ${common_files}/openbor/OpenBOR_ff  ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/OpenBOR_ff

@@ -1,0 +1,157 @@
+#!/bin/bash
+# make by G.R.H
+
+ROM_DIR="/storage/roms"
+[ -d "/storage/games-external/roms" ] && ROM_DIR="/storage/games-external/roms"
+
+[ ! -d "/storage/roms/music" ] && systemd-tmpfiles --create /usr/config/system-dirs.conf
+
+# Auto restore
+if [ -f ${ROM_DIR}/sos.txt ]; then
+    rm -f ${ROM_DIR}/sos.txt
+    /usr/config/modules/mod/restore.sh 1
+fi
+
+if [ -e ${ROM_DIR}/update/update.sh ]; then
+${ROM_DIR}/update/update.sh
+fi
+
+if [ -e /storage/.done ]; then
+# flag
+if [ -e "/storage/.config/flag/fast_mode.flg" ]; then
+    echo -e "\n\033[32m███████╗ █████╗ ███████╗████████╗        ███╗   ███╗ ██████╗ ██████╗ ███████╗" >/dev/tty0
+    echo -e "██╔════╝██╔══██╗██╔════╝╚══██╔══╝        ████╗ ████║██╔═══██╗██╔══██╗██╔════╝" >/dev/tty0
+    echo -e "█████╗  ███████║███████╗   ██║           ██╔████╔██║██║   ██║██║  ██║█████╗  " >/dev/tty0
+    echo -e "██╔══╝  ██╔══██║╚════██║   ██║           ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  " >/dev/tty0
+    echo -e "██║     ██║  ██║███████║   ██║           ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗" >/dev/tty0
+    echo -e "╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝           ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝\033[0m" >/dev/tty0
+fi
+if [ -e "/storage/.config/flag/power_mode.flg" ]; then
+    echo -e "\n\033[33m ██████╗ ██╗   ██╗██╗ ██████╗██╗  ██╗    ███╗   ███╗ ██████╗ ██████╗ ███████╗" >/dev/tty0
+    echo -e "██╔═══██╗██║   ██║██║██╔════╝██║ ██╔╝    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝" >/dev/tty0
+    echo -e "██║   ██║██║   ██║██║██║     █████╔╝     ██╔████╔██║██║   ██║██║  ██║█████╗  " >/dev/tty0
+    echo -e "██║▄▄ ██║██║   ██║██║██║     ██╔═██╗     ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  " >/dev/tty0
+    echo -e "╚██████╔╝╚██████╔╝██║╚██████╗██║  ██╗    ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗" >/dev/tty0
+    echo -e " ╚══▀▀═╝  ╚═════╝ ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝\033[0m" >/dev/tty0
+fi
+exit 0
+fi
+
+# themes
+mkdir -p "${ROM_DIR}/JELOS/themes"
+[[ ! "ls -A ${ROM_DIR}/JELOS/themes" = "" ]] && mv -f ${ROM_DIR}/JELOS/themes/* /storage/.config/emulationstation/themes &
+
+# openbor
+    if [ ! -d "${ROM_DIR}/JELOS/openbor/Saves" ]; then
+        mkdir -p "${ROM_DIR}/JELOS/openbor/Saves"
+    fi
+    if [ ! -L "/storage/openbor/Saves" ]; then
+      if [ -d "/storage/openbor/Saves" ]; then
+        cp -rf "/storage/openbor/Saves" "${ROM_DIR}/JELOS/openbor"
+      fi
+        rm -rf "/storage/openbor/Saves" 2>/dev/null
+        ln -sf "${ROM_DIR}/JELOS/openbor/Saves" "/storage/openbor/Saves"
+    fi
+
+# ppsspp
+for DIR in PPSSPP_STATE SAVEDATA GAME
+do
+    if [ ! -d "${ROM_DIR}/JELOS/ppsspp/${DIR}" ]; then
+        mkdir -p "${ROM_DIR}/JELOS/ppsspp/${DIR}"
+    fi
+    if [ ! -L "/storage/.config/ppsspp/PSP/${DIR}" ]; then
+      if [ -d "/storage/.config/ppsspp/PSP/${DIR}" ]; then
+        cp -rf "/storage/.config/ppsspp/PSP/${DIR}" "${ROM_DIR}/JELOS/ppsspp"
+      fi
+        rm -rf "/storage/.config/ppsspp/PSP/${DIR}" 2>/dev/null
+        ln -sf "${ROM_DIR}/JELOS/ppsspp/${DIR}" "/storage/.config/ppsspp/PSP/${DIR}"
+    fi
+done
+
+# cheats & shaders
+mkdir -p "${ROM_DIR}/JELOS/shaders"
+mkdir -p "${ROM_DIR}/JELOS/cheats"
+if [ ! -L "/storage/database/cht" ]; then
+    rm -rf "/storage/database/cht"
+    ln -sf "${ROM_DIR}/JELOS/cheats" "/storage/database/cht"
+fi
+
+wait
+sync
+
+# Run update.sh
+if [ -f /flash/update/update.sh ]; then
+/flash/update/update.sh
+fi
+
+# Auto update
+VERSION1=$(cat /storage/.config/version.conf)
+VERSION2=$(cat /usr/share/version.conf)
+if [[ ! -f /storage/.config/version.conf ]] || [[ "$VERSION1" != "$VERSION2" ]] || [[ ! -f /storage/.done ]]
+ then
+    cp -f /usr/share/version.conf /storage/.config/version.conf
+    touch /storage/.done
+    /usr/config/modules/mod/restore.sh 1
+fi
+
+# Install onscripter
+if [ ! -d "/storage/.config/onscripter" ]; then
+    mkdir -p "/storage/.config/onscripter"
+    cp -rf "/usr/config/onscripter" "/storage/.config/"
+    chmod -R 777 /storage/.config/onscripter
+fi
+directory="${ROM_DIR}/onscripter"
+mkdir -p $directory
+for romdir in $directory/*
+do
+  if [ -d "$romdir" ]; then
+    romname=$(basename "$romdir")
+    if [[ ! -f "$romdir/${romname}.ons" ]] && [[ ! -f "$romdir/${romname}.ONS" ]] && [[ ! "$romname" = "image" ]]; then
+      touch "$romdir/${romname}.ons"
+    fi
+  fi
+done
+
+# togle language
+if grep -q "language=zh_CN" /storage/.config/system/configs/system.cfg; then
+    if ! grep -q "调整" /storage/.config/modules/gamelist.xml; then
+        cp -f /usr/config/modules/gamelist.xml /storage/.config/modules
+        chmod 644 /storage/.config/modules/gamelist.xml
+    fi
+    if ! grep -q "Language \= zh_CN" /storage/.config/ppsspp/PSP/SYSTEM/ppsspp.ini; then
+        sed -i -e '/Language \=/c\Language \= zh_CN' /storage/.config/ppsspp/PSP/SYSTEM/ppsspp.ini
+    fi
+    if ! grep -q 'user_language = \"12\"' /storage/.config/retroarch/retroarch.cfg; then
+        sed -i -e '/user_language \= \"/c\user_language \= \"12\"' /storage/.config/retroarch/retroarch.cfg
+    fi
+else
+    if ! grep -q "TWEAKS" /storage/.config/modules/gamelist.xml; then
+        cp -f /usr/config/modules/gamelist_en.xml /storage/.config/modules/gamelist.xml
+        chmod 644 /storage/.config/modules/gamelist.xml
+    fi
+    if grep -q "Language \= zh_CN" /storage/.config/ppsspp/PSP/SYSTEM/ppsspp.ini; then
+        sed -i -e '/Language \=/c\Language \= en_US' /storage/.config/ppsspp/PSP/SYSTEM/ppsspp.ini
+    fi
+    if grep -q 'user_language = \"12\"' /storage/.config/retroarch/retroarch.cfg; then
+        sed -i -e '/user_language \= \"/c\user_language \= \"0\"' /storage/.config/retroarch/retroarch.cfg
+    fi
+fi
+
+# flag
+if [ -f "/storage/.config/flag/fast_mode.flg" ]; then
+    echo -e "\n\033[32m███████╗ █████╗ ███████╗████████╗        ███╗   ███╗ ██████╗ ██████╗ ███████╗" >/dev/tty0
+    echo -e "██╔════╝██╔══██╗██╔════╝╚══██╔══╝        ████╗ ████║██╔═══██╗██╔══██╗██╔════╝" >/dev/tty0
+    echo -e "█████╗  ███████║███████╗   ██║           ██╔████╔██║██║   ██║██║  ██║█████╗  " >/dev/tty0
+    echo -e "██╔══╝  ██╔══██║╚════██║   ██║           ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  " >/dev/tty0
+    echo -e "██║     ██║  ██║███████║   ██║           ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗" >/dev/tty0
+    echo -e "╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝           ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝\033[0m" >/dev/tty0
+fi
+if [ -f "/storage/.config/flag/power_mode.flg" ]; then
+    echo -e "\n\033[33m ██████╗ ██╗   ██╗██╗ ██████╗██╗  ██╗    ███╗   ███╗ ██████╗ ██████╗ ███████╗" >/dev/tty0
+    echo -e "██╔═══██╗██║   ██║██║██╔════╝██║ ██╔╝    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝" >/dev/tty0
+    echo -e "██║   ██║██║   ██║██║██║     █████╔╝     ██╔████╔██║██║   ██║██║  ██║█████╗  " >/dev/tty0
+    echo -e "██║▄▄ ██║██║   ██║██║██║     ██╔═██╗     ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝  " >/dev/tty0
+    echo -e "╚██████╔╝╚██████╔╝██║╚██████╗██║  ██╗    ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗" >/dev/tty0
+    echo -e " ╚══▀▀═╝  ╚═════╝ ╚═╝ ╚═════╝╚═╝  ╚═╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝\033[0m" >/dev/tty0
+fi
+
