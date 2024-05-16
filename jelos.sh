@@ -117,6 +117,8 @@ cp ${common_files}/multiemu_libretro.so ${system_root}/usr/lib/libretro/
 chmod 775 ${system_root}/usr/lib/libretro/multiemu_libretro.so
 cp ${common_files}/pcsx_rearmed_rumble_32b_libretro.* ${system_root}/usr/lib/libretro/
 chmod 775 ${system_root}/usr/lib/libretro/pcsx_rearmed_rumble_32b_libretro.so
+cp ${common_files}/mamearcade_libretro.so ${system_root}/usr/lib/libretro/
+chmod 775 ${system_root}/usr/lib/libretro/mamearcade_libretro.so
 
 echo "Update bezels.sh"
 cp -f ${common_files}/bezels.sh ${system_root}/usr/bin/
