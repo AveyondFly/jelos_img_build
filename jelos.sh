@@ -28,9 +28,9 @@ echo "Decompressing SYSTEM image"
 rm -rf ${system_root}
 unsquashfs -d ${system_root} ${mount_point}/SYSTEM
 
-# Only for generation single card img.
-#echo "Update fs-resze file"
-#sudo cp -f fs-resize_jelos ${system_root}/usr/lib/jelos/fs-resize 
+# Add roms partition
+echo "Update fs-resze file"
+sudo cp -f ${common_files}/fs-resize_jelos ${system_root}/usr/lib/jelos/fs-resize 
 
 
 sudo cp -f ${common_files}/010-autorun ${system_root}/usr/lib/autostart/cbepx/
