@@ -82,6 +82,8 @@ cp -f ${common_files}/jelos-bluetooth ${system_root}/usr/bin/jelos-bluetooth
 chmod 775 ${system_root}/usr/bin/jelos-bluetooth
 cp -f ${common_files}/bluetoothctl ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/bluetoothctl
+cp -f ${common_files}/bt.sh ${system_root}/usr/bin/
+chmod 775 ${system_root}/usr/bin/bt.sh
 
 echo "revert kernel"
 cp -rf ${common_files}/8821cs.ko ${system_root}/usr/lib/kernel-overlays/base/lib/modules/4.19.172/kernel/drivers/net/wireless/rockchip_wlan/rtl8821cs/8821cs.ko

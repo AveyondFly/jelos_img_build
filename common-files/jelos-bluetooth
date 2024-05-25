@@ -16,6 +16,8 @@ from dataclasses import dataclass
 import time
 import sys
 import os
+import subprocess 
+import shlex 
 from multiprocessing import Process
 
 DEBUG = False
@@ -261,7 +263,7 @@ def on_device_discovered(dev: BluetoothDevice) -> bool:
     if (
         not dev.connected  # exclude already connected devices
         and dev.rssi != 0  # exclude inactive devices (saved)
-        and "input-" in dev.icon  # exclude any non-input device
+        and (dev.icon.startswith("input") or dev.icon.startswith("audio"))  # exclude any non-input device
     ):
         print(
             "found device {}, mac: {}, icon: {}, paired: {}".format(
@@ -271,6 +273,11 @@ def on_device_discovered(dev: BluetoothDevice) -> bool:
 
         if bt.trust(dev) and bt.pair(dev) and bt.connect(dev):
             print("connected device {}".format(dev.name))
+            if dev.icon.startswith("audio"):  
+                result = subprocess.run(['bash', '/usr/bin/bt.sh'], check=True, stdout=subprocess.PIPE, universal_newlines=True) 
+                print(result.stdout)  
+            else:  
+                print("Device is not an audio device.")  
             return False
         else:
             bt.forget(dev)
