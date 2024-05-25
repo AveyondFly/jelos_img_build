@@ -138,6 +138,11 @@ mksquashfs ${system_root} SYSTEM -comp gzip -b 524288
 rm ${mount_point}/SYSTEM
 mv SYSTEM ${mount_point}/SYSTEM
 
+if [[ $1 == *"v2"* ]]; then
+	echo "update v2"
+	cp ${common_files}/rk3566-rgb30-v2-linux.dtb ${mount_point}/rk3566-rgb30-linux.dtb
+fi
+
 #tempcode, used to generate the img for update.pmf only
 #rm -rf ${mount_point}/update
 
