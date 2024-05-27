@@ -41,7 +41,7 @@ unsquashfs -d ${system_root} ${mount_point}/SYSTEM
 
 # Add roms partition
 echo "Update fs-resze file"
-sudo cp -f ${common_files}/fs-resize_jelos ${system_root}/usr/lib/jelos/fs-resize 
+sudo cp -f ${common_files}/fs-resize_coreelec ${system_root}/usr/lib/coreelec/fs-resize 
 
 
 sudo cp -f ${common_files}/010-autorun ${system_root}/usr/lib/autostart/cbepx/
@@ -59,7 +59,7 @@ cp -f ${common_files}/automount ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/automount
 
 echo "Fix pico8"
-cp -f ${common_files}/start_pico8.sh ${system_root}/usr/bin/
+cp -f ${common_dev}/start_pico8.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/start_pico8.sh
 
 echo "Update smb.conf"
@@ -68,36 +68,36 @@ cp -f ${common_files}/smb.conf ${system_root}/usr/config/
 echo "Fix flycast"
 cp -f ${common_files}/flycast ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/flycast
-cp -f ${common_files}/start_flycast.sh ${system_root}/usr/bin/
+cp -f ${common_dev}/start_flycast.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/start_flycast.sh
 
 echo "fix bluetooth"
-cp -f ${common_files}/bt/hciattach-realtek.service ${system_root}/usr/lib/systemd/system/
-chmod 775 ${system_root}/usr/lib/systemd/system/hciattach-realtek.service
-ln -s ../hciattach-realtek.service ${system_root}/usr/lib/systemd/system/multi-user.target.wants/hciattach-realtek.service
-cp -f ${common_files}/bt/rtk_hciattach ${system_root}/usr/bin/rtk_hciattach
-chmod 775 ${system_root}/usr/bin/rtk_hciattach
-cp -rf ${common_dev}/firmware/* ${system_root}/usr/lib/kernel-overlays/base/lib/firmware/
+#cp -f ${common_files}/bt/hciattach-realtek.service ${system_root}/usr/lib/systemd/system/
+#chmod 775 ${system_root}/usr/lib/systemd/system/hciattach-realtek.service
+#ln -s ../hciattach-realtek.service ${system_root}/usr/lib/systemd/system/multi-user.target.wants/hciattach-realtek.service
+#cp -f ${common_files}/bt/rtk_hciattach ${system_root}/usr/bin/rtk_hciattach
+#chmod 775 ${system_root}/usr/bin/rtk_hciattach
+#cp -rf ${common_dev}/firmware/* ${system_root}/usr/lib/kernel-overlays/base/lib/firmware/
 
-rm -rf ${system_root}/usr/lib/systemd/system/bluetoothsense.service
-cp -f ${common_files}/batocera-bluetooth ${system_root}/usr/bin/batocera-bluetooth
-chmod 775 ${system_root}/usr/bin/batocera-bluetooth
-cp -f ${common_files}/jelos-bluetooth ${system_root}/usr/bin/jelos-bluetooth
-chmod 775 ${system_root}/usr/bin/jelos-bluetooth
-cp -f ${common_files}/bluetoothctl ${system_root}/usr/bin/
-chmod 775 ${system_root}/usr/bin/bluetoothctl
-cp -f ${common_files}/bt.sh ${system_root}/usr/bin/
-chmod 775 ${system_root}/usr/bin/bt.sh
+#rm -rf ${system_root}/usr/lib/systemd/system/bluetoothsense.service
+#cp -f ${common_files}/batocera-bluetooth ${system_root}/usr/bin/batocera-bluetooth
+#chmod 775 ${system_root}/usr/bin/batocera-bluetooth
+#cp -f ${common_files}/jelos-bluetooth ${system_root}/usr/bin/jelos-bluetooth
+#chmod 775 ${system_root}/usr/bin/jelos-bluetooth
+#cp -f ${common_files}/bluetoothctl ${system_root}/usr/bin/
+#chmod 775 ${system_root}/usr/bin/bluetoothctl
+#cp -f ${common_files}/bt.sh ${system_root}/usr/bin/
+#chmod 775 ${system_root}/usr/bin/bt.sh
 
 
 echo "Update j2me files"
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 chmod 775 ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
-cp -f ${common_files}/runemu.sh ${system_root}/usr/bin/runemu.sh
+cp -f ${common_dev}/runemu.sh ${system_root}/usr/bin/runemu.sh
 chmod 775 ${system_root}/usr/bin/runemu.sh
 cp -f ${common_files}/sdl_interface ${system_root}/usr/bin/sdl_interface
 chmod 775 ${system_root}/usr/bin/sdl_interface
-cp -f ${common_files}/start_freej2me.sh ${system_root}/usr/bin/start_freej2me.sh
+cp -f ${common_dev}/start_freej2me.sh ${system_root}/usr/bin/start_freej2me.sh
 chmod 775 ${system_root}/usr/bin/start_freej2me.sh
 cp -f ${common_files}/freej2me.sh ${system_root}/usr/bin/freej2me.sh
 chmod 775 ${system_root}/usr/bin/freej2me.sh
@@ -110,7 +110,7 @@ cp -f ${common_dev}/libSDL2-2.0.so.0 ${system_root}/usr/config/drastic/lib/
 chmod 775 ${system_root}/usr/config/drastic/lib/libSDL2-2.0.so.0
 cp -f ${common_files}/drastic ${system_root}/usr/config/drastic/
 chmod 775 ${system_root}/usr/config/drastic/
-cp -f ${common_files}/start_drastic.sh ${system_root}/usr/bin/start_drastic.sh
+cp -f ${common_dev}/start_drastic.sh ${system_root}/usr/bin/start_drastic.sh
 chmod 775 ${system_root}/usr/bin/start_drastic.sh
 
 echo "Update RA core file"
@@ -130,7 +130,7 @@ cp -f ${common_files}/bezels.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/bezels.sh
 
 echo "Fix mplayer"
-cp -f ${common_files}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
+cp -f ${common_dev}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
 chmod 775 ${system_root}/usr/bin/start_mplayer.sh
 
 echo "Update issue file" 

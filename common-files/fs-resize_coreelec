@@ -1,0 +1,107 @@
+#!/bin/sh
+
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2009-2014 Stephan Raue (stephan@openelec.tv)
+# Copyright (C) 2018-present Team CoreELEC (https://coreelec.org)
+# Copyright (C) 2023 JELOS (https://github.com/JustEnoughLinuxOS)
+
+if [ -e /storage/.please_resize_me ] ; then
+  . /usr/lib/coreelec/functions
+
+  hidecursor
+
+  # this sh** was never intended to be used
+  # on already installed and runing system
+#  if [ -d /storage/.kodi -o -d /storage/.config -o -d /storage/.cache ] ; then
+#    rm -f /storage/.please_resize_me
+#    sync
+#    echo "Resizing is not permitted - the system has already been initialised."
+#    StartProgress countdown "Rebooting in 15s... " 15 "NOW"
+#    reboot
+#  fi
+
+  # get the disk. /storage on 2nd partition
+  PART=$(blkid | awk 'BEGIN {FS=":"} /'$(cat /proc/cmdline | sed -e 's#^.*disk=UUID=##g' -e 's#\ .*$##g')'/ {print $1}')
+  if [ "$(echo ${PART} | awk '/mmcblk/ || /nvme/ {print $1}')" ]
+  then
+    DISK=$(echo ${PART} | sed s/p[0-9]//g)
+    PARTNUM=$(echo ${PART} | sed "s#^.*[0-9]p##g")
+	ROMS_PART_NAME="${DISK}p5"
+  else
+    DISK=$(echo ${PART} | sed s/[0-9]//g)
+    PARTNUM=$(echo ${PART} | sed "s#^.*sd[a-z]##g")
+	ROMS_PART_NAME="${DISK}p5"
+  fi
+  rm -f /storage/.please_resize_me
+  sync
+
+  # just in case
+  if [ ! -z "${DISK}" -a ! -z "${PART}" ] ; then
+    umount ${PART}
+
+    clear >/dev/console
+    DISK_NAME=$(basename $DISK)
+    DISK_SECTORS=$(cat "/sys/block/$DISK_NAME/size") # Obtain the disk sectors count, each sector is always 512 Bytes large, independent of the underlying device, according to https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/types.h#n117
+    DISK_SIZE=$(( $DISK_SECTORS * 512 )) # Calculate the disk actual size, in byte
+    if [ $DISK_SIZE -gt 8589934592 ]; then # The optimal behaviour, this will leave 6GiB to storage, and create the EEROMS partition
+      ROMS_CREATE='yes'
+      STORAGE_END='8GiB'
+    elif [ $DISK_SIZE -gt 3221225472 ]; then  # Optionaly omit the EEROMS partition for 4GB cards/drives
+      ROMS_CREATE=''
+      ROMS_OMIT_MANUAL=''
+      STORAGE_END='100%'
+    else
+      # The bare minumum a EmuELEC image itself needs is 2186280960, but after adding in user configs things become uncontrollable, so we don't care about disks with size between 2085MiB and 3GiB
+      echo 'ERROR: You disk is too small! You need to use a USB drive/SD card that is at least 4GB!'
+      echo 'ERROR: You should NOT try to boot up this drive as it is NOT properly resized!'
+      StartProgress countdown "Powering off in 30s...     " 30 "NOW"
+      poweroff
+    fi
+    echo "PARTITION RESIZING IN PROGRESS"
+    echo ""
+    echo "Please do not reboot or turn off your JELOS device!"
+    echo ""
+    echo "Mod by G.R.H append java-sa"
+    echo ""
+
+    # identify the partition scheme, and if gpt fix minor issues such as gpt header not at end of disk
+    SCHEME=$(blkid -s PTTYPE -o value ${DISK})
+    if [ "$SCHEME" = "gpt" ]; then
+      StartProgress spinner "Checking layout...      " "parted -fs ${DISK} print &>/dev/null"
+    fi
+    if [ "$ROMS_CREATE" ]; then
+      # EmueELEC Get EEROMS filetype
+      ROM_FS_TYPE="vfat"
+      PARTED_FS_TYPE="fat32"
+    fi
+
+    StartProgress spinner "Resizing storage partition...   " "parted -s -a optimal -m ${DISK} resizepart ${PARTNUM} $STORAGE_END &>/dev/null"
+    StartProgress spinner "Checking storage file system... " "e2fsck -f -p ${PART} &>/dev/null"
+    StartProgress spinner "Resizing storage file system... " "resize2fs ${PART} &>/dev/null"
+    StartProgress spinner "Checking storage file system... " "e2fsck -f -p ${PART} &>/dev/null"
+    if [ "$ROMS_CREATE" ]; then
+      StartProgress spinner "Creating ROMS partition..." "parted -s -a optimal -m $DISK mkpart primary ${PARTED_FS_TYPE} ${STORAGE_END} 100% &>/dev/null"
+      partprobe &>/dev/null
+      case $ROM_FS_TYPE in 
+        "ntfs")
+        StartProgress spinner "Formatting ROMS partition as NTFS..." "mkfs.ntfs -L EEROMS -f ${ROMS_PART_NAME} &>/dev/null"
+        ;;
+        "ext4")
+        StartProgress spinner "Formatting ROMS partition as EXT4..." "mkfs.ext4 -L EEROMS -t ext4 -O 64bit ${ROMS_PART_NAME} &>/dev/null"
+        ;;
+        "exfat")
+        StartProgress spinner "Formatting ROMS partition as EXFAT..." "mkfs.exfat -n EEROMS ${ROMS_PART_NAME} &>/dev/null"
+        ;;
+        *)
+        StartProgress spinner "Formatting ROMS partition as FAT32..." "mkfs.vfat -n EEROMS ${ROMS_PART_NAME} &>/dev/null"
+        ;;
+      esac
+    else
+      echo 'WARNING: EEROMS partition is omitted for <8GB drives'
+    fi
+
+    StartProgress countdown "Rebooting in 5s...     " 5 "NOW"
+  fi
+fi
+sync &>/dev/null
+reboot &>/dev/null
