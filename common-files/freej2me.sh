@@ -9,6 +9,11 @@
 
 clear > /dev/console
 
+if [ ! -f "/storage/roms/bios/freej2me-sdl.jar" ]; then
+    cp /usr/config/game/freej2me/freej2me-sdl.jar /storage/roms/bios
+    cp -rf /usr/config/game/java /storage/
+fi
+
 if [ ! -f "/storage/roms/bios/freej2me-lr.jar" ]; then
     cp /usr/config/game/freej2me/freej2me-lr.jar /storage/roms/bios
 fi

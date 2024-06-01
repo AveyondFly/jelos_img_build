@@ -329,7 +329,7 @@ case ${EMULATOR} in
         RUNTHIS='${RUN_SHELL} "${ROMNAME}"'
       ;;
       "j2me")
-        RUNTHIS='${RUN_SHELL} /usr/bin/start_freej2me.sh "${ROMNAME}"'
+        RUNTHIS='${RUN_SHELL} /usr/bin/start_freej2me.sh "${ROMNAME}" ${CORE}' 
       ;;
       "openbor")
         RUNTHIS='${RUN_SHELL} /usr/bin/start_OpenBOR.sh "${ROMNAME}" ${CORE}'

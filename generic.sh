@@ -79,6 +79,9 @@ cp -f ${common_files}/bt.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/bt.sh
 
 echo "Update j2me files"
+cp -f ${common_files}/freej2me-sdl.jar ${system_root}/usr/config/game/freej2me/freej2me-sdl.jar
+cp -rf ${common_files}/java ${system_root}/usr/config/game/
+
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 chmod 775 ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 cp -f ${common_files}/runemu.sh ${system_root}/usr/bin/runemu.sh
@@ -105,12 +108,12 @@ cp -f ${common_files}/es_systems.cfg ${system_root}/usr/config/emulationstation/
 echo "Update RA core file"
 cp ${common_files}/fbneo_libretro.so ${system_root}/usr/lib/libretro/
 chmod 775 ${system_root}/usr/lib/libretro/fbneo_libretro.so
-cp ${common_files}/multiemu_libretro.so ${system_root}/usr/lib/libretro/
-chmod 775 ${system_root}/usr/lib/libretro/multiemu_libretro.so
+#cp ${common_files}/multiemu_libretro.so ${system_root}/usr/lib/libretro/
+#chmod 775 ${system_root}/usr/lib/libretro/multiemu_libretro.so
 cp ${common_files}/pcsx_rearmed_rumble_32b_libretro.* ${system_root}/usr/lib/libretro/
 chmod 775 ${system_root}/usr/lib/libretro/pcsx_rearmed_rumble_32b_libretro.so
-cp ${common_files}/mamearcade_libretro.so ${system_root}/usr/lib/libretro/
-chmod 775 ${system_root}/usr/lib/libretro/mamearcade_libretro.so
+#cp ${common_files}/mamearcade_libretro.so ${system_root}/usr/lib/libretro/
+#chmod 775 ${system_root}/usr/lib/libretro/mamearcade_libretro.so
 cp ${common_files}/gam4980_32b_libretro* ${system_root}/usr/lib/libretro/
 chmod 775 ${system_root}/usr/lib/libretro/gam4980_32b_libretro.so
 

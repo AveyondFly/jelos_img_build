@@ -90,8 +90,9 @@ cp -rf ${common_files}/8821cs.ko ${system_root}/usr/lib/kernel-overlays/base/lib
 
 
 echo "Update j2me files"
+cp -f ${common_files}/freej2me-sdl.jar ${system_root}/usr/config/game/freej2me/freej2me-sdl.jar
+cp -rf ${common_files}/java ${system_root}/usr/config/game/
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
-chmod 775 ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 cp -f ${common_files}/runemu.sh ${system_root}/usr/bin/runemu.sh
 chmod 775 ${system_root}/usr/bin/runemu.sh
 cp -f ${common_files}/sdl_interface ${system_root}/usr/bin/sdl_interface
