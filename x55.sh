@@ -38,7 +38,7 @@ unsquashfs -d ${system_root} ${mount_point}/SYSTEM
 
 # Add roms partition
 echo "Update fs-resze file"
-sudo cp -f ${common_files}/fs-resize_coreelec ${system_root}/usr/lib/coreelec/fs-resize 
+sudo cp -f ${common_files}/fs-resize_jelos ${system_root}/usr/lib/jelos/fs-resize 
 
 
 sudo cp -f ${common_files}/010-autorun ${system_root}/usr/lib/autostart/cbepx/
@@ -56,7 +56,7 @@ cp -f ${common_files}/automount ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/automount
 
 echo "Fix pico8"
-cp -f ${common_dev}/start_pico8.sh ${system_root}/usr/bin/
+cp -f ${common_files}/start_pico8.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/start_pico8.sh
 
 echo "Update smb.conf"
@@ -65,7 +65,7 @@ cp -f ${common_files}/smb.conf ${system_root}/usr/config/
 echo "Fix flycast"
 cp -f ${common_files}/flycast ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/flycast
-cp -f ${common_dev}/start_flycast.sh ${system_root}/usr/bin/
+cp -f ${common_files}/start_flycast.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/start_flycast.sh
 
 echo "fix bluetooth"
@@ -89,17 +89,20 @@ chmod 775 ${system_root}/usr/bin/bluetoothctl
 
 
 echo "Update j2me files"
+cp -f ${common_files}/freej2me-sdl.jar ${system_root}/usr/config/game/freej2me/freej2me-sdl.jar
+cp -rf ${common_files}/java ${system_root}/usr/config/game/
+
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 chmod 775 ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
-cp -f ${common_dev}/runemu.sh ${system_root}/usr/bin/runemu.sh
+cp -f ${common_files}/runemu.sh ${system_root}/usr/bin/runemu.sh
 chmod 775 ${system_root}/usr/bin/runemu.sh
 cp -f ${common_files}/sdl_interface ${system_root}/usr/bin/sdl_interface
 chmod 775 ${system_root}/usr/bin/sdl_interface
-cp -f ${common_dev}/start_freej2me.sh ${system_root}/usr/bin/start_freej2me.sh
+cp -f ${common_files}/start_freej2me.sh ${system_root}/usr/bin/start_freej2me.sh
 chmod 775 ${system_root}/usr/bin/start_freej2me.sh
 cp -f ${common_files}/freej2me.sh ${system_root}/usr/bin/freej2me.sh
 chmod 775 ${system_root}/usr/bin/freej2me.sh
-cp -f ${common_dev}/es_systems.cfg ${system_root}/usr/config/emulationstation/
+cp -f ${common_files}/es_systems.cfg ${system_root}/usr/config/emulationstation/
 
 echo "Update nds files"
 cp -rf ${common_files}/bg ${system_root}/usr/config/drastic/
@@ -130,8 +133,12 @@ cp -f ${common_files}/bezels.sh ${system_root}/usr/bin/
 chmod 775 ${system_root}/usr/bin/bezels.sh
 
 echo "Fix mplayer"
-cp -f ${common_dev}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
+cp -f ${common_files}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
 chmod 775 ${system_root}/usr/bin/start_mplayer.sh
+
+echo "Fix wakeup from sleep"
+mkdir -p ${system_root}/usr/lib/autostart/quirks/devices/Powkiddy\ x55/sleep.d/post
+cp ${common_dev}/001-audio ${system_root}/usr/lib/autostart/quirks/devices/Powkiddy\ x55/sleep.d/post/
 
 echo "Update issue file" 
 cp ${common_files}/issue ${system_root}/etc/
@@ -141,8 +148,10 @@ mksquashfs ${system_root} SYSTEM -comp gzip -b 524288
 rm ${mount_point}/SYSTEM
 mv SYSTEM ${mount_point}/SYSTEM
 
+echo "Fix battery"
 rm ${mount_point}/KERNEL
 cp ${common_dev}/KERNEL ${mount_point}/KERNEL
+
 
 #tempcode, used to generate the img for update.pmf only
 #rm -rf ${mount_point}/update
