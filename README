@@ -1,0 +1,6 @@
+1. Download the origin img inside that dir.
+2. Execute "sudo bash ./rgb30.sh JELOS-RGB30.aarch64-20240314-MOD.img"
+
+Replace the script as your device properly to generate your device img.
+"generic.sh" is for script not listed RK3566 devices.
+
