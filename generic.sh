@@ -125,6 +125,9 @@ echo "Fix mplayer"
 cp -f ${common_files}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
 chmod 775 ${system_root}/usr/bin/start_mplayer.sh
 
+echo "Fix onscripter"
+cp ${system_root}/usr/lib/libretro/onscripter_libretro.so ${system_root}/usr/lib/libretro/onscripter_32b_libretro.so
+
 echo "Update issue file" 
 cp ${common_files}/issue ${system_root}/etc/
 

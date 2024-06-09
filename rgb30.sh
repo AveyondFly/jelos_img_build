@@ -74,6 +74,7 @@ ln -s ../hciattach-realtek.service ${system_root}/usr/lib/systemd/system/multi-u
 cp -f ${common_files}/bt/rtk_hciattach ${system_root}/usr/bin/rtk_hciattach
 chmod 775 ${system_root}/usr/bin/rtk_hciattach
 cp -f ${common_files}/bt/rtl8821c_* ${system_root}/usr/lib/kernel-overlays/base/lib/firmware/
+cp -f ${common_files}/bt/rtl8723d* ${system_root}/usr/lib/kernel-overlays/base/lib/firmware/
 
 rm -rf ${system_root}/usr/lib/systemd/system/bluetoothsense.service
 cp -f ${common_files}/batocera-bluetooth ${system_root}/usr/bin/batocera-bluetooth
@@ -132,6 +133,9 @@ chmod 775 ${system_root}/usr/bin/bezels.sh
 echo "Fix mplayer"
 cp -f ${common_files}/start_mplayer.sh ${system_root}/usr/bin/start_mplayer.sh
 chmod 775 ${system_root}/usr/bin/start_mplayer.sh
+
+echo "Fix onscripter"
+cp ${system_root}/usr/lib/libretro/onscripter_libretro.so ${system_root}/usr/lib/libretro/onscripter_32b_libretro.so
 
 echo "Update issue file" 
 cp ${common_files}/issue ${system_root}/etc/
