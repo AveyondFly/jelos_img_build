@@ -15,6 +15,6 @@ if [[ "${2}" == "freej2me_mod" ]]; then
 else
 	JAVA_TOOL_OPTIONS='-Xverify:none -Djava.awt.headless=true -Dsun.jnu.encoding=UTF-8 -Dfile.encoding=UTF-8'
 	export JAVA_TOOL_OPTIONS
-	/storage/jdk/bin/java -jar /storage/roms/bios/freej2me-linux-aarch64.jar $1
+	/storage/jdk/bin/java -jar /storage/java/freej2me-linux-aarch64.jar $1
 fi
 

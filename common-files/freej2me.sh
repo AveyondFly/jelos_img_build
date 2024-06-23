@@ -9,17 +9,14 @@
 
 clear > /dev/console
 
-if [ ! -f "/storage/roms/bios/freej2me-sdl.jar" ]; then
-    cp /usr/config/game/freej2me/freej2me-sdl.jar /storage/roms/bios
+if [ ! -f "/storage/java/sdl_interface" ]; then
     cp -rf /usr/config/game/java /storage/
+    cp /usr/config/game/freej2me/freej2me-sdl.jar /storage/java/
+    cp /usr/config/game/freej2me/freej2me-linux-aarch64.jar /storage/java/
 fi
 
 if [ ! -f "/storage/roms/bios/freej2me-lr.jar" ]; then
     cp /usr/config/game/freej2me/freej2me-lr.jar /storage/roms/bios
-fi
-
-if [ ! -f "/storage/roms/bios/freej2me-linux-aarch64.jar" ]; then
-    cp /usr/config/game/freej2me/freej2me-linux-aarch64.jar /storage/roms/bios
 fi
 
 JDKDEST="/storage/jdk"

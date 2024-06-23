@@ -96,8 +96,6 @@ cp -rf ${common_files}/java ${system_root}/usr/config/game/
 cp -f ${common_files}/freej2me-linux-aarch64.jar ${system_root}/usr/config/game/freej2me/freej2me-linux-aarch64.jar
 cp -f ${common_files}/runemu.sh ${system_root}/usr/bin/runemu.sh
 chmod 775 ${system_root}/usr/bin/runemu.sh
-cp -f ${common_files}/sdl_interface ${system_root}/usr/bin/sdl_interface
-chmod 775 ${system_root}/usr/bin/sdl_interface
 cp -f ${common_files}/start_freej2me.sh ${system_root}/usr/bin/start_freej2me.sh
 chmod 775 ${system_root}/usr/bin/start_freej2me.sh
 cp -f ${common_files}/freej2me.sh ${system_root}/usr/bin/freej2me.sh

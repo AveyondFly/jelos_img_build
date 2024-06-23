@@ -29,39 +29,39 @@ gamedir=`dirname "$1"`
 if echo $gamedir | grep "240x320" > /dev/null
 then
 	# echo "240*320" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 240 320 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 240 320 100
 
 elif echo $gamedir | grep "320x240" > /dev/null
 then
 	# echo "320*240" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 320 240 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 320 240 100
 
 elif echo $gamedir | grep "128x128" > /dev/null
 then
 	# echo "128*128" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 128 128 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 128 128 100
 	
 elif echo $gamedir | grep "176x208" > /dev/null
 then
 	# echo "128*128" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 176 208 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 176 208 100
 
 elif echo $gamedir | grep "176x220" > /dev/null
 then
 	# echo "128*128" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 176 220 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 176 220 100
 
 elif echo $gamedir | grep "360x640" > /dev/null
 then
 	# echo "128*128" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 360 640 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 360 640 100
 
 elif echo $gamedir | grep "640x360" > /dev/null
 then
 	# echo "640*360" >>0.txt
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 640 360 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 640 360 100
 
 else
 	echo "none"
-	java -jar /storage/roms/bios/freej2me-sdl.jar "$1" 240 320 100
+	java -jar /storage/java/freej2me-sdl.jar "$1" 240 320 100
 fi
